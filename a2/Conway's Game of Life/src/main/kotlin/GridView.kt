@@ -2,14 +2,11 @@ import javafx.scene.Node
 import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
-import java.util.*
-import kotlin.collections.HashMap
 
 class GridView(model: Model): IView, GridPane() {
 
-    private val nodeMap = hashMapOf<Int, Node>()
-    val rMultiplier = 103
-    val cMultiplier = 97
+    private var nodeMap = hashMapOf<Pair<Int, Int>, Rectangle>()
+    var myModel = model
 
     init {
         // create a grid and attach as the root node
@@ -26,22 +23,17 @@ class GridView(model: Model): IView, GridPane() {
                 gridNode.fill = Color.WHITE
 
                 gridNode.setOnMouseClicked {
-                    if (gridNode.fill == Color.WHITE) {
-                        gridNode.fill = Color.BLACK
-                    } else {
-                        gridNode.fill = Color.WHITE
-                    }
-                    val x = GridPane.getColumnIndex(gridNode)
-                    val y = GridPane.getRowIndex(gridNode)
-                    println(getNode(x, y))
-                    println(x)
-                    println(y)
-                    model.coordinates[0] = x
-                    model.coordinates[1] = y
+                    val y = getColumnIndex(gridNode)
+                    val x = getRowIndex(gridNode)
+                    model.addShape(x, y)
+                    // update board
+
+                    println(model.getBoard(x, y))
                     model.notifyViews()
                 }
 
-                nodeMap[i * rMultiplier + j * cMultiplier] = gridNode
+                val currPair = Pair(j, i) // (row, col)
+                nodeMap[currPair] = gridNode
                 this.add(gridNode, i, j)
             }
         }
@@ -49,12 +41,21 @@ class GridView(model: Model): IView, GridPane() {
 
     }
 
-    private fun getNode(row: Int, column: Int): Node? {
-        return nodeMap[row * rMultiplier + column * cMultiplier]
+    private fun getNode(row: Int, col: Int): Rectangle? {
+        return nodeMap[Pair(row, col)]
     }
 
 
     override fun update() {
-        //
+        for (x in 0..49) {
+            for (y in 0..74) {
+                if (myModel.getBoard(x, y) == true) {
+                    getNode(x, y)?.fill = Color.BLACK
+                }
+                else {
+                    getNode(x, y)?.fill = Color.WHITE
+                }
+            }
+        }
     }
 }

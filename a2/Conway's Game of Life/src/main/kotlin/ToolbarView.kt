@@ -23,6 +23,11 @@ class ToolbarView(model: Model) : IView, ToolBar() {
 
         val clearButton = Button("Clear")
 
+        clearButton.setOnAction { event->
+            model.clearBoard()
+            model.notifyViews()
+        }
+
         blockButton.setOnAction { event ->
             model.currSelected = "block"
         }

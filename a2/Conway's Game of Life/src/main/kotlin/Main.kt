@@ -17,8 +17,8 @@ class Main : Application() {
 
         // register views with the model
         model.addView(toolbar)
-        model.addView(gridView)
         model.addView(status)
+        model.addView(gridView)
 
         // setup and display
         root.children.addAll(toolbar, gridView, status) // gridView

@@ -9,15 +9,19 @@ class StatusView(model: Model) : IView, HBox() {
     var myModel = model
 
     init {
+        this.children.add(actionLabel)
     }
 
     override fun update() {
         // react to updates from model
         // how do we get data from the model? do we need it?
         // get coordinates
-
-        actionLabel.text = "    " + myModel.coordinates[0].toString() + ", " + myModel.coordinates[1].toString()
-
-        this.children.add(actionLabel)
+        if (myModel.lastSelected == "Cleared Board" || myModel.lastSelected == "") {
+            actionLabel.text = "     " + myModel.lastSelected
+        }
+        else {
+            actionLabel.text =
+                "    Created " + myModel.lastSelected + " at (" + myModel.coordinates[0].toString() + ", " + myModel.coordinates[1].toString() + ")"
+        }
     }
 }
