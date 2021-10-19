@@ -1,3 +1,6 @@
+import javafx.animation.AnimationTimer
+import javafx.animation.Animation
+
 class Model {
     // represent my board
     val adjustmentFactor = 5 // this is purely for edge collision cases
@@ -9,6 +12,25 @@ class Model {
     var coordinates = intArrayOf(0, 0)
     var currSelected = "" // the currently selected shape
     var lastSelected = "" // for status
+    var frameCounter = 0
+    var pause = false
+
+    init {
+        // timer fires every 1s
+        val time: AnimationTimer = object : AnimationTimer() {
+            private var lastUpdate: Long = 0
+            override fun handle(now: Long) {
+                if (now - lastUpdate >= 1000000000.0 && !pause) {
+                    updateBoard()
+                    frameCounter += 1
+                    notifyViews()
+                    lastUpdate = now
+                }
+            }
+        }
+        time.start()
+
+    }
 
     // board manipulation
     // (a) add a shape
@@ -141,14 +163,16 @@ class Model {
         }
         lastSelected = "Cleared Board"
     }
-    // Add functions to update the board
-    // use built-in classes for grid rather than gc and canvas
 
+    // Manual mode functionality
+    fun manualSwap() {
+        pause = !pause
+    }
 
-    fun updateStatus(status: StatusView) {
-        val gridView = views[1] // second element in array
-        // need to get coordinates
-
+    fun advance() {
+        updateBoard()
+        frameCounter += 1
+        notifyViews()
     }
 
     // view management
@@ -156,9 +180,6 @@ class Model {
         views.add(view)
     }
 
-    fun removeView(view: IView) {
-        views.remove(view)
-    }
 
     fun notifyViews() {
         for (view in views) {

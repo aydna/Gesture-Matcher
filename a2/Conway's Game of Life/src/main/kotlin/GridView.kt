@@ -1,4 +1,5 @@
 import javafx.scene.Node
+import javafx.scene.input.KeyCode
 import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
@@ -25,10 +26,12 @@ class GridView(model: Model): IView, GridPane() {
                 gridNode.setOnMouseClicked {
                     val y = getColumnIndex(gridNode)
                     val x = getRowIndex(gridNode)
+                    if (model.currSelected != "") {
+                        model.frameCounter += 1
+                    }
                     model.addShape(x, y)
-                    // update board
 
-                    println(model.getBoard(x, y))
+                    // update board
                     model.notifyViews()
                 }
 

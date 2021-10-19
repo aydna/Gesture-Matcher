@@ -1,10 +1,34 @@
-import javafx.scene.control.Button
-import javafx.scene.control.ToolBar
+import javafx.scene.control.*
+import javafx.scene.control.Alert.AlertType
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.input.KeyCode
+
 
 class ToolbarView(model: Model) : IView, ToolBar() {
     init {
+
+        var firstTime = true
+        // manual mode support
+        this.setOnKeyPressed { event->
+            if (event.code === KeyCode.ENTER && model.pause) {
+                model.advance()
+            }
+            else if (event.code === KeyCode.M) {
+                model.manualSwap()
+                if (firstTime) {
+                    firstTime = false
+                    val infoBox = Alert(AlertType.INFORMATION)
+                    infoBox.title = "About Manual Mode"
+                    infoBox.headerText = "Entering Manual Mode"
+                    infoBox.contentText = "Manual mode lets you step through the animation frame-by-frame. You can hit the M key to toggle, and use the Enter/Return key to advance frames."
+                    infoBox.showAndWait()
+                }
+            }
+        }
+
+        val optionsToggle = Button("About Manual Mode")
+        optionsToggle.graphic = ImageView(Image("info.png", 20.0, 20.0, false, false))
 
         val blockButton = Button("Block")
         blockButton.graphic = ImageView(Image("block.png", 20.0, 20.0, false, false))
@@ -22,6 +46,7 @@ class ToolbarView(model: Model) : IView, ToolBar() {
         gliderButton.graphic = ImageView(Image("glider.png", 20.0, 20.0, false, false))
 
         val clearButton = Button("Clear")
+        clearButton.graphic = ImageView(Image("clear.png", 20.0, 20.0, false, false))
 
         clearButton.setOnAction { event->
             model.clearBoard()
@@ -48,6 +73,15 @@ class ToolbarView(model: Model) : IView, ToolBar() {
             model.currSelected = "glider"
         }
 
+        optionsToggle.setOnAction {
+            firstTime = false
+            val infoBox = Alert(AlertType.INFORMATION)
+            infoBox.title = "About Manual Mode"
+            infoBox.headerText = "Entering Manual Mode"
+            infoBox.contentText = "Manual mode lets you step through the animation frame-by-frame. You can press the M key to toggle, and use the Enter/Return key to advance frames."
+            infoBox.showAndWait()
+        }
+
         // add buttons to toolbar
         this.items.add(blockButton)
         this.items.add(beehiveButton)
@@ -55,11 +89,10 @@ class ToolbarView(model: Model) : IView, ToolBar() {
         this.items.add(toadButton)
         this.items.add(gliderButton)
         this.items.add(clearButton)
-
+        this.items.add(optionsToggle)
     }
 
     override fun update() {
-        // update my button state
-        // how do we get data from the model?
+        // Doesn't do anything
     }
 }

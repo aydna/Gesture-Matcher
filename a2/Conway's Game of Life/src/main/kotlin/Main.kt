@@ -1,7 +1,9 @@
 import javafx.application.Application
+import javafx.event.ActionEvent
 import javafx.scene.Scene
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
+
 
 class Main : Application() {
     override fun start(stage: Stage?) {
@@ -26,7 +28,7 @@ class Main : Application() {
         stage?.isResizable = false
         stage?.width = 974.0
         stage?.height = 736.0
-        stage?.title = "Conway's Game of Life"
+        stage?.title = "Conway's Game of Life (yz8yang)"
         stage?.show()
     }
 }

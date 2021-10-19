@@ -1,15 +1,21 @@
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
+import javafx.scene.layout.Region
 
 class StatusView(model: Model) : IView, HBox() {
-    var frame = 0
-    var currAction = ""
     val actionLabel = Label()
     val frameLabel = Label()
     var myModel = model
 
     init {
+
+        val region = Region()
+        setHgrow(region, Priority.ALWAYS)
         this.children.add(actionLabel)
+        this.children.add(region)
+        this.children.add(frameLabel)
+
     }
 
     override fun update() {
@@ -23,5 +29,6 @@ class StatusView(model: Model) : IView, HBox() {
             actionLabel.text =
                 "    Created " + myModel.lastSelected + " at (" + myModel.coordinates[0].toString() + ", " + myModel.coordinates[1].toString() + ")"
         }
+        frameLabel.text = "Frame " + myModel.frameCounter + "    "
     }
 }
