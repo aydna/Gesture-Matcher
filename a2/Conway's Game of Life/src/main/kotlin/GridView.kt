@@ -26,9 +26,6 @@ class GridView(model: Model): IView, GridPane() {
                 gridNode.setOnMouseClicked {
                     val y = getColumnIndex(gridNode)
                     val x = getRowIndex(gridNode)
-                    if (model.currSelected != "") {
-                        model.frameCounter += 1
-                    }
                     model.addShape(x, y)
 
                     // update board

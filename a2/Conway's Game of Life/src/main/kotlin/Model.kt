@@ -41,7 +41,7 @@ class Model {
             //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
-            updateBoard()
+            //updateBoard()
         }
         else if (currSelected == "beehive") {
             addBeehive(x, y)
@@ -49,7 +49,7 @@ class Model {
             //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
-            updateBoard()
+            //updateBoard()
         }
         else if (currSelected == "blinker") {
             addBlinker(x, y)
@@ -57,7 +57,7 @@ class Model {
             //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
-            updateBoard()
+            //updateBoard()
         }
         else if (currSelected == "toad") {
             addToad(x, y)
@@ -65,7 +65,7 @@ class Model {
             //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
-            updateBoard()
+            //updateBoard()
         }
         else if (currSelected == "glider") {
             addGlider(x, y)
@@ -73,7 +73,7 @@ class Model {
             //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
-            updateBoard()
+            //updateBoard()
         }
     }
 
