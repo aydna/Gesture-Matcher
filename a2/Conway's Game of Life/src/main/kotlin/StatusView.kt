@@ -22,12 +22,12 @@ class StatusView(model: Model) : IView, HBox() {
         // react to updates from model
         // how do we get data from the model? do we need it?
         // get coordinates
-        if (myModel.lastSelected == "Cleared Board" || myModel.lastSelected == "") {
-            actionLabel.text = "     " + myModel.lastSelected
+        if (myModel.currSelected == "Cleared Board" || myModel.currSelected == "") {
+            actionLabel.text = "     " + myModel.currSelected
         }
         else {
             actionLabel.text =
-                "    Created " + myModel.lastSelected + " at (" + myModel.coordinates[0].toString() + ", " + myModel.coordinates[1].toString() + ")"
+                "    Created " + myModel.currSelected + " at (" + myModel.coordinates[0].toString() + ", " + myModel.coordinates[1].toString() + ")"
         }
         frameLabel.text = "Frame " + myModel.frameCounter + "    "
     }

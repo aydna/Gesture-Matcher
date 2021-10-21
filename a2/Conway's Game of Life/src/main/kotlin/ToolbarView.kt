@@ -75,6 +75,7 @@ class ToolbarView(model: Model) : IView, ToolBar() {
 
         optionsToggle.setOnAction {
             firstTime = false
+            model.currSelected = ""
             val infoBox = Alert(AlertType.INFORMATION)
             infoBox.title = "About Manual Mode"
             infoBox.headerText = "Entering Manual Mode"

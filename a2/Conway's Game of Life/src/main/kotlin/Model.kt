@@ -37,40 +37,40 @@ class Model {
     fun addShape(x: Int, y: Int) {
         if (currSelected == "block") {
             addBlock(x, y)
-            lastSelected = currSelected
-            currSelected = ""
+            //lastSelected = currSelected
+            //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
             updateBoard()
         }
         else if (currSelected == "beehive") {
             addBeehive(x, y)
-            lastSelected = currSelected
-            currSelected = ""
+            //lastSelected = currSelected
+            //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
             updateBoard()
         }
         else if (currSelected == "blinker") {
             addBlinker(x, y)
-            lastSelected = currSelected
-            currSelected = ""
+            //lastSelected = currSelected
+            //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
             updateBoard()
         }
         else if (currSelected == "toad") {
             addToad(x, y)
-            lastSelected = currSelected
-            currSelected = ""
+            //lastSelected = currSelected
+            //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
             updateBoard()
         }
         else if (currSelected == "glider") {
             addGlider(x, y)
-            lastSelected = currSelected
-            currSelected = ""
+            //lastSelected = currSelected
+            //currSelected = ""
             coordinates[0] = y
             coordinates[1] = x
             updateBoard()
@@ -161,7 +161,7 @@ class Model {
                 board[x][y] = false
             }
         }
-        lastSelected = "Cleared Board"
+        currSelected = "Cleared Board"
     }
 
     // Manual mode functionality
