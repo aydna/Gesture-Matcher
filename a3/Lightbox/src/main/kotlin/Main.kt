@@ -7,7 +7,7 @@ import javafx.stage.Stage
 
 class Main : Application() {
     override fun start(stage: Stage) {
-        val model = Model(stage)
+        val model = Model()
 
         // our layout is the root of the scene graph
         val root = BorderPane()
@@ -21,6 +21,7 @@ class Main : Application() {
         model.addView(toolbar)
         model.addView(status)
         model.addView(pane)
+        model.s = pane
 
         // resizing cap
         stage.minWidth = 400.0

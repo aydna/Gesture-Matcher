@@ -19,6 +19,11 @@ class ToolbarView(model: Model, stage: Stage) : IView, ToolBar() {
         val rLeftButton = Button("Rotate Left")
         val rRightButton = Button("Rotate Right")
 
+        val zoomInButton = Button("Zoom-in")
+        val zoomOutButton = Button("Zoom-out")
+
+        val resetButton = Button("Reset")
+
         addButton.setOnAction {
             val currFile = fileChooser.showOpenDialog(stage)
             model.addImage(currFile)
@@ -29,13 +34,34 @@ class ToolbarView(model: Model, stage: Stage) : IView, ToolBar() {
         }
 
         rLeftButton.setOnAction {
-            model.rotateLeft()
+            model.rotate("l")
         }
+
+        rRightButton.setOnAction {
+            model.rotate("r")
+        }
+
+        zoomInButton.setOnAction {
+            model.scale("in")
+        }
+
+        zoomOutButton.setOnAction {
+            model.scale("out")
+        }
+
+        resetButton.setOnAction {
+            model.reset()
+        }
+
 
         // add buttons to toolbar
         this.items.add(addButton)
         this.items.add(delButton)
         this.items.add(rLeftButton)
+        this.items.add(rRightButton)
+        this.items.add(zoomInButton)
+        this.items.add(zoomOutButton)
+        this.items.add(resetButton)
     }
 
     override fun update() {
