@@ -37,7 +37,7 @@ class Main : Application() {
         stage.scene = Scene(root)
         stage.width = 1000.0
         stage.height = 750.0
-        stage.title = "lightbox (yz8yang)"
+        stage.title = "LightBox (yz8yang)"
         stage.show()
     }
 }

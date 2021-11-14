@@ -6,15 +6,14 @@ import javafx.scene.layout.Region
 
 class StatusView(model: Model) : IView, HBox() {
     val actionLabel = Label()
-    val frameLabel = Label()
-    var myModel = model
+    val m = model
 
     init {
-        actionLabel.text = "test"
-        //actionLabel.minHeight = 5.0
+        actionLabel.text = "   " + model.images.size.toString() + " images loaded"
         this.children.add(actionLabel)
     }
 
     override fun update() {
+        actionLabel.text = "   " + m.images.size.toString() + " image(s) loaded"
     }
 }

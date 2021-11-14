@@ -36,6 +36,8 @@ class Model() {
     var outerX = 0.0
     var outerY = 0.0
 
+    var isCascade = true // cascade mode
+
     init {
     }
 
@@ -54,9 +56,18 @@ class Model() {
         imageToAdd = currImage
         images.add(currImage) // add to images array
 
+        currSelected.effect = null // get rid of current image selection dropshadow
+        isSelected = true
+        currImage.effect = ds
+        currSelected = currImage
+
         // update canvas
         notifyViews()
         fileToAdd = "" // currently no image on the block
+        if (!isCascade) {
+            //tile mode
+            tile()
+        }
 
         // add dragging functionality
         currImage.setOnMousePressed { event ->
@@ -69,6 +80,7 @@ class Model() {
                 currSelected.effect = null // get rid of shadow
             }
             isSelected = true
+            notifyViews() // enable del button
             currSelected = currImage
             //currImage.effect = DropShadow(5.0, Color.BLUE)
             println(currSelected)
@@ -79,16 +91,24 @@ class Model() {
             if (state == STATE.DRAG) {
                 val dx = event.sceneX - startX
                 val dy = event.sceneY - startY
+                val currOuterX = outerX
+                val currOuterY = outerY
 
-                if (currImage.boundsInParent.minX + dx >= 0.0 && currImage.boundsInParent.maxX + dx <= (s.width - 5)) {
+                // find way to get the full dimensions (bounds) of scrollpane
+                if (currImage.boundsInParent.minX + dx >= 0.0 && currImage.boundsInParent.maxX + dx <= max(currOuterX, s.width - 5)) {
+                    println(currOuterX)
                     currImage.x += dx
                     startX = event.sceneX
                 }
 
-                if (currImage.boundsInParent.minY + dy >= 0.0 && currImage.boundsInParent.maxY + dy <= (s.height - 5)) {
+                if (currImage.boundsInParent.minY + dy >= 0.0 && currImage.boundsInParent.maxY + dy <= max(currOuterY, s.height - 5)) {
                     currImage.y += dy
                     startY = event.sceneY
                 }
+
+                // switch back to cascade
+                isCascade = true
+                notifyViews()
             }
         }
 
@@ -104,6 +124,15 @@ class Model() {
 
     }
 
+    private fun max(a: Double, b: Double): Double {
+        return if (a > b) a
+        else b
+    }
+
+    fun disableDel() {
+        notifyViews() // disable del button on pane click
+    }
+
     fun findNewBound() {
         var highestX = 0.0
         var highestY = 0.0
@@ -115,6 +144,8 @@ class Model() {
                 highestY = i.boundsInParent.maxY
             }
         }
+        outerX = highestX
+        outerY = highestY
         s.p.prefWidth = highestX
         s.p.prefHeight = highestY
     }
@@ -123,10 +154,15 @@ class Model() {
         if (isSelected) {
             delImg = true
             imageToDel = currSelected
-            images.remove(imageToDel)
+            images.remove(currSelected)
+            isSelected = false
             findNewBound()
             notifyViews()
             delImg = false
+            if (!isCascade) {
+                //tile mode
+                tile()
+            }
         }
     }
 
@@ -160,7 +196,8 @@ class Model() {
 
         currSelected.rotate = rotationMap[currSelected]!!
         findNewBound()
-        //currSelected.transforms.add(Rotate(10.0))
+        isCascade = true
+        notifyViews()
     }
 
     // zoom-in/out scaling
@@ -194,6 +231,10 @@ class Model() {
         currSelected.scaleX = scaleMap[currSelected]!!
         currSelected.scaleY = scaleMap[currSelected]!!
         findNewBound()
+        println(outerX)
+        println(outerY)
+        isCascade = true
+        notifyViews()
     }
 
     fun reset() {
@@ -209,6 +250,65 @@ class Model() {
         findNewBound()
     }
 
+    fun tile() {
+        // reset all transformations first
+        currSelected.effect = null
+        for (img in images) {
+            currSelected = img
+            isSelected = true
+            reset()
+        }
+        isSelected = false
+
+        isCascade = false // switch to tile mode
+        notifyViews() // disable del button
+
+        var currX = 5.0
+        val currY = 5.0
+        val numFitX: Int = s.width.div(305.0).toInt() // number of columns of images we can have
+        println(numFitX)
+        var tileOffset = mutableListOf<Double>() // height offset
+        for (k in 0..images.size) {
+            tileOffset.add(0.0) // initialize all to 0
+        }
+
+        var i = 0
+        while (i < images.size) {
+
+            for (j in 0 until (numFitX.toInt())) {
+                if (i >= images.size) {
+                    break
+                }
+                if (i >= numFitX) {
+                    // do diff stuff. no longer the first layer
+                    val tmpHeight = 5.0 + tileOffset[i - numFitX] // check if this goes beyond pane
+                    /* fk it try greedy for now
+                    if (currY >= paneHeight) {
+                    } */
+                    images[i].translateX = 0.0
+                    images[i].translateY = 0.0
+                    images[i].x = currX
+                    images[i].y = tmpHeight
+                    println(tmpHeight)
+                    println(currX)
+                    tileOffset[i] = tmpHeight + images[i].boundsInParent.height
+                    currX += 305.0
+                }
+                else {
+                    images[i].translateX = 0.0
+                    images[i].translateY = 0.0
+                    images[i].x = currX
+                    images[i].y = currY
+                    currX += 305.0 // move right for next img placement; 5 units used for padding
+                    tileOffset[i] = currY + images[i].boundsInParent.height // for offset
+                }
+                i += 1
+            }
+            //after a row is done
+            currX = 5.0 // reset
+        }
+        findNewBound()
+    }
 
     // view management
     fun addView(view: IView) {
