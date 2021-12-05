@@ -22,7 +22,7 @@ class CanvasView: View {
 
     // have to add the canvas view (drawing view) here. includes path points
 
-    var currPathPoints: ArrayList<SharedViewModel.Point> = ArrayList()
+    //var currPathPoints: ArrayList<SharedViewModel.Point> = ArrayList()
     var currPath: Path? = null
     var paths: ArrayList<Path?> = ArrayList()
     var currX: Float = 0.0F
@@ -34,7 +34,7 @@ class CanvasView: View {
 
     init {
         paintbrush.style = Paint.Style.STROKE
-        paintbrush.strokeWidth = 6F
+        paintbrush.strokeWidth = 8F
 
     }
 
@@ -66,8 +66,8 @@ class CanvasView: View {
 
     fun downPress(x: Float, y: Float) {
         //add path points to sharedViewModel path array
-        currPathPoints = ArrayList()
-        currPathPoints.add(SharedViewModel.Point(x.toDouble(), y.toDouble())) // add this to points array in model
+        //currPathPoints = ArrayList()
+        //urrPathPoints.add(SharedViewModel.Point(x.toDouble(), y.toDouble())) // add this to points array in model
         currPath = Path()
         currPath!!.moveTo(x, y)
         currX = x
@@ -81,7 +81,7 @@ class CanvasView: View {
         val dy = Math.abs(x - currY)
 
         //set a tolerance. eg. n = 128 (distance between putting in a path point)
-        currPathPoints.add(SharedViewModel.Point(x.toDouble(), y.toDouble()))
+        //currPathPoints.add(SharedViewModel.Point(x.toDouble(), y.toDouble()))
         currPath?.lineTo(x, y)
         currX = x
         currY = y
@@ -89,32 +89,9 @@ class CanvasView: View {
     }
 
     fun liftPress() {
-        currPathPoints.add(SharedViewModel.Point(currX.toDouble(), currY.toDouble()))
+        //currPathPoints.add(SharedViewModel.Point(currX.toDouble(), currY.toDouble()))
         currPath?.lineTo(currX, currY)
     }
-
-    // this function and code snippet was obtained from https://stackoverflow.com/questions/5536066/convert-view-to-bitmap-on-android
-    /*
-    fun getBitmapFromView(): Bitmap? {
-        //Define a bitmap with the same size as the view
-        val returnedBitmap = Bitmap.createBitmap(417, 382, Bitmap.Config.ARGB_8888)
-        //Bind a canvas to it
-        val canvas = Canvas(returnedBitmap)
-        //Get the view's background
-        val bgDrawable = this.background
-        if (bgDrawable != null) {//has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas)
-        }
-        else {
-            canvas.drawColor(Color.WHITE)
-        }
-        // draw the view on the canvas
-        this.draw(canvas)
-        currPath?.let { canvas.drawPath(it, paintbrush) }
-        //return the bitmap
-        return returnedBitmap
-    }
-     */
 
     // clear canvas
     fun clear() {

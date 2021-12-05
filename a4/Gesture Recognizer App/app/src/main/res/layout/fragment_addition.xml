@@ -9,8 +9,8 @@
 
     <com.example.a4starter.CanvasView
         android:id="@+id/canvasView"
-        android:layout_width="417dp"
-        android:layout_height="382dp"
+        android:layout_width="396dp"
+        android:layout_height="396dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

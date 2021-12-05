@@ -26,16 +26,6 @@ class LibraryFragment : Fragment() {
         val listView: ListView = root.findViewById(R.id.listView1)
         listView.adapter = gestureAdapter
 
-        // added stuff
-        /*
-        val adapter = GestureArrayAdapter(
-            this.requireContext(),
-            mViewModel, mViewModel.strokeGestures, R.layout.gesture_item
-        )
-        val listView: ListView = root.findViewById(R.id.gesture_list)
-        listView.adapter = adapter
-        */
-
         return root
     }
 }
